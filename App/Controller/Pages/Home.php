@@ -8,7 +8,7 @@ use \App\Model\Entity\Organization;
 class Home extends Page
 {
     /**
-     * undocumented function summary
+     * Método responsável por retornar a View da página Home
      * @return string
      **/
     public static function getHome()
@@ -18,9 +18,9 @@ class Home extends Page
 
         //VIEW DA HOME
         $content = View::render('pages/home', [
-            'name' => $obOrganization->name,
-            'description' => $obOrganization->description,
-            'site' => $obOrganization->site,
+            'name' => $obOrganization->name
+            // 'description' => $obOrganization->description,
+            // 'site' => $obOrganization->site,
         ]);
 
         //RETORNA A VIEW DA PÁGINA
