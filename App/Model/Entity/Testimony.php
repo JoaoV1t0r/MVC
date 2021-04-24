@@ -51,8 +51,19 @@ class Testimony
             'mensagem' => $this->mensagem,
             'data' => $this->data
         ]);
-        // echo '<pre>';
-        // print_r($this);
-        // exit;
+    }
+
+    /**
+     * Método responsável por retornar os depoimentos do banco de dados
+     *
+     * @param string $where
+     * @param string $order
+     * @param string $limit
+     * @param string $field
+     * @return PDOStatement
+     */
+    public static function getTestimonies($where = null, $order = null, $limit = null, $field = '*')
+    {
+        return (new Database('depoimentos'))->select($where, $order, $limit, $field);
     }
 }
