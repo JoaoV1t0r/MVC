@@ -9,6 +9,9 @@ $app = new Router('http://localhost/MVC');
 
 //ROTA HOME
 $app->get('/', [
+    'middlewares' => [
+        'maintenance'
+    ],
     function () {
         return new Response(200, Pages\Home::getHome());
     }
