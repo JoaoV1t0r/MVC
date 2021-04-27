@@ -2,12 +2,11 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-
-use \App\Http\Response;
 use App\Utils\View;
 use \WilliamCosta\DotEnv\Environment;
 use \WilliamCosta\DatabaseManager\Database;
 use \App\Http\Middlewares\Queue as MiddlewareQueue;
+use App\Http\Router;
 
 //CARREGA VARIÁVEIS DE AMBIENTE
 Environment::load(__DIR__ . '/../');
@@ -22,6 +21,8 @@ Database::config(
 );
 
 define('URL', getenv('URL'));
+
+$app = new Router(URL);
 
 View::init([
     'URL' => URL

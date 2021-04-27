@@ -1,11 +1,7 @@
 <?php
 
-use \App\Http\Router;
 use \App\Http\Response;
 use \App\Controller\Pages;
-
-
-$app = new Router('http://localhost/MVC');
 
 //ROTA HOME
 $app->get('/', [
