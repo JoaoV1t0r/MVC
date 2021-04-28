@@ -30,7 +30,9 @@ View::init([
 
 //DEFINE O MAPEAMENTO DE MIDDLEWARES
 MiddlewareQueue::setMap([
-    'maintenance' => \App\Http\Middlewares\Maintenance::class
+    'maintenance' => \App\Http\Middlewares\Maintenance::class,
+    'require-admin-logout' => \App\Http\Middlewares\RequireAdminLogout::class,
+    'require-admin-login' => \App\Http\Middlewares\RequireAdminLogin::class
 ]);
 
 //DEFINE O MAPEAMENTO DE MIDDLEWARES (EXECUTADOS EM TODAS AS ROTAS)

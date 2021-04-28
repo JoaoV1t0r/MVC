@@ -62,4 +62,19 @@ class Login extends Page
         //REDERIONA O USER PARA A HOME DO ADMIN
         $request->getRouter()->redirect('/admin');
     }
+
+    /**
+     * Método reponsável por definir o por deslogar o User
+     *
+     * @param Reqeust $request
+     * @return string
+     */
+    public static function setLogout($request)
+    {
+        //APAGA A SESSÃO DE LOGIN
+        SessionAdminLogin::Logout();
+
+        //REDERIONA O USER PARA A TELA DE LOGIN
+        $request->getRouter()->redirect('/admin/login');
+    }
 }
