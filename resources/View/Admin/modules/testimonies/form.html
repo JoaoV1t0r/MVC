@@ -1,0 +1,22 @@
+<h1>Depoimentos</h1>
+<p>{{title}}</p>
+<hr>
+
+<form method="post" action="?page=1">
+    <div class="form-group">
+        <label for="">Nome</label>
+        <input class="form-control" value="{{nome}}" type="text" name="nome" required>
+    </div>
+    <div class="form-group">
+        <label for="">Mensagem</label>
+        <textarea name="mensagem" rows="5" class="form-control" required>{{mensagem}}</textarea>
+    </div>
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">{{acao}}</button>
+        <a href="{{URL}}/admin/testimonies">
+            <button type="button" class="btn btn-warning">Voltar</button>
+        </a>
+    </div>
+</form>
+
+<hr>

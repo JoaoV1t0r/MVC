@@ -40,9 +40,7 @@ class Testimony extends Page
 
         //QUANTIDADE TOTAL DE REGISTROS
         $quantidadeTotal = EntityTestimony::getTestimonies(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-        // echo '<pre>';
-        // print_r($quantidadeTotal);
-        // exit;
+
         //PÁGINA ATUAL
         $queryParams = $request->getQueryParams();
         $paginaAtual = $queryParams['page'] ?? 1;
@@ -78,9 +76,68 @@ class Testimony extends Page
     public static function getNewTestimony($request)
     {
         //CONTEÚDO DO FORM
-        $content = View::render('Admin/modules/testimonies/form', []);
+        $content = View::render('Admin/modules/testimonies/form', [
+            'title' => 'Cadastrar Depoimento.',
+            'acao' => 'Cadastrar',
+            'nome' => '',
+            'mensagem' => ''
+        ]);
 
         //RETORNA A PÁGINA COMPLETA
         return parent::getPanel('Cadastrar Depoimento > João Vitor', $content, 'testimonies');
+    }
+
+    /**
+     * Método responsável por cadastrar um depoimento
+     *
+     * @param Resquest $request
+     * @return string
+     */
+    public static function setNewTestimony($request)
+    {
+        //DADOS DO POST
+        $postVars = $request->getPostVars();
+
+        //NOVA INSTANCIA DE DEPOIMENTO
+        $obTestimony = new EntityTestimony;
+        $obTestimony->nome = $postVars['nome'];
+        $obTestimony->mensagem = $postVars['mensagem'];
+        $obTestimony->cadastrar();
+
+        //REDIRECIONA O USUÁRIO
+        $request->getRouter()->redirect('/admin/testimonies/' . $obTestimony->id . '/edit?status=created');
+    }
+
+    /**
+     * Método responsável por retronar o formulário de cadastro de um novo depoimento
+     * 
+     * @param Request $request
+     * @param integer $id
+     * @return string
+     */
+    public static function getEditTestimony($request, $id)
+    {
+        //OBTÉM O DEPOIMENTO DO BANCO DE DADOS
+        $obTestimony = EntityTestimony::getTestimonyById($id);
+
+        //VALÍDA INSTANCIA
+        if (!$obTestimony instanceof EntityTestimony) {
+            $request->getRouter()->redirect('/admin/testimonies');
+            return;
+        }
+        // echo '<pre>';
+        // print_r($obTestimony);
+        // exit;
+
+        //CONTEÚDO DO FORM
+        $content = View::render('Admin/modules/testimonies/form', [
+            'title' => 'Editar Depoimento.',
+            'acao' => 'Editar',
+            'nome' => $obTestimony->nome,
+            'mensagem' => $obTestimony->mensagem
+        ]);
+
+        //RETORNA A PÁGINA COMPLETA
+        return parent::getPanel('Editar Depoimento > João Vitor', $content, 'testimonies');
     }
 }

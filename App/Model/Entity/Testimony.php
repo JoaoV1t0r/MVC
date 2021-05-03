@@ -66,4 +66,15 @@ class Testimony
     {
         return (new Database('depoimentos'))->select($where, $order, $limit, $field);
     }
+
+    /**
+     * Método responsável por retornar um depoimento com base no Id do banco de dados
+     *
+     * @param integer $id
+     * @return PDOStatement
+     */
+    public static function getTestimonyById($id)
+    {
+        return self::getTestimonies('id = ' . $id)->fetchObject(self::class);
+    }
 }
