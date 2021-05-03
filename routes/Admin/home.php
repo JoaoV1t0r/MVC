@@ -1,7 +1,7 @@
 <?php
 
 use \App\Http\Response;
-use App\Controller\Admin\Home;
+use App\Controller\Admin;
 
 //ROTA ADMIN
 $app->get('/admin', [
@@ -9,6 +9,6 @@ $app->get('/admin', [
         'require-admin-login'
     ],
     function ($request) {
-        return new Response(200, Home::getHome($request));
+        return new Response(200, Admin\Home::getHome($request));
     }
 ]);
