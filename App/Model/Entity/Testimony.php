@@ -54,6 +54,20 @@ class Testimony
     }
 
     /**
+     * Método responsável por atualizar a instancia atual no banco de dados
+     *
+     * @return boolean
+     */
+    public function atualizar()
+    {
+        //ATUALIZA O DEPOIMENTO NO BANCO DE DADOS
+        return (new Database('depoimentos'))->update('id = ' . $this->id, [
+            'nome' => $this->nome,
+            'mensagem' => $this->mensagem
+        ]);
+    }
+
+    /**
      * Método responsável por retornar os depoimentos do banco de dados
      *
      * @param string $where
