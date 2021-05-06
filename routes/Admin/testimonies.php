@@ -52,3 +52,23 @@ $app->post('/admin/testimonies/{id}/edit', [
         return new Response(200, Admin\Testimony::setEditTestimony($request, $id));
     }
 ]);
+
+//ROTA DE EXCLUSÃO DE DEPOIMENTO 
+$app->get('/admin/testimonies/{id}/delete', [
+    'middlewares' => [
+        'require-admin-login'
+    ],
+    function ($request, $id) {
+        return new Response(200, Admin\Testimony::getDeleteTestimony($request, $id));
+    }
+]);
+
+//ROTA DE EXCLUSÃO DE DEPOIMENTO 
+$app->post('/admin/testimonies/{id}/delete', [
+    'middlewares' => [
+        'require-admin-login'
+    ],
+    function ($request, $id) {
+        return new Response(200, Admin\Testimony::setDeleteTestimony($request, $id));
+    }
+]);

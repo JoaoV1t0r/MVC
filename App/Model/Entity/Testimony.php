@@ -68,6 +68,17 @@ class Testimony
     }
 
     /**
+     * Método responsável por deletar a instancia atual no banco de dados
+     *
+     * @return boolean
+     */
+    public function excluir()
+    {
+        //EXCLUI O DEPOIMENTO NO BANCO DE DADOS
+        return (new Database('depoimentos'))->delete('id = ' . $this->id);
+    }
+
+    /**
      * Método responsável por retornar os depoimentos do banco de dados
      *
      * @param string $where
