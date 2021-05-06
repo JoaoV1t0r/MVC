@@ -44,4 +44,18 @@ class User
     {
         return (new Database('usuarios'))->select('email = "' . $email . '"')->fetchObject(self::class);
     }
+
+    /**
+     * Método responsável por retornar todos os usuários
+     **
+     * @param string $where
+     * @param string $order
+     * @param string $limit
+     * @param string $field
+     * @return PDOStatement
+     */
+    public static function getUsers($where = null, $order = null, $limit = null, $field = '*')
+    {
+        return (new Database('usuarios'))->select($where, $order, $limit, $field);
+    }
 }
