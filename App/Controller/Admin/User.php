@@ -25,13 +25,16 @@ class User extends Page
         //MENSAGEM DE STATUS
         switch ($queryParams['status']) {
             case 'created':
-                return Alert::getSuccess('Depoimento Criado com Sucesso');
+                return Alert::getSuccess('Usuário Criado com Sucesso');
                 break;
             case 'updated':
-                return Alert::getSuccess('Depoimento Atualizado com Sucesso');
+                return Alert::getSuccess('Usuário Atualizado com Sucesso');
                 break;
             case 'deleted':
-                return Alert::getSuccess('Depoimento Excluído com Sucesso');
+                return Alert::getSuccess('Usuário Excluído com Sucesso');
+                break;
+            case 'duplicated':
+                return Alert::getError('E-mail já cadastrado');
                 break;
         }
     }
@@ -107,7 +110,7 @@ class User extends Page
         $content = View::render('Admin/modules/users/form', [
             'title' => 'Cadastrar Usuário.',
             'acao' => 'Cadastrar',
-            'status' => '',
+            'status' => self::getStatus($request),
             'nome' => '',
             'email' => ''
         ]);
@@ -126,11 +129,11 @@ class User extends Page
     public static function getEditUser($request, $id)
     {
         //OBTÉM O DEPOIMENTO DO BANCO DE DADOS
-        $obUser = EntityUser::getTestimonyById($id);
+        $obUser = EntityUser::getUserId($id);
 
         //VALÍDA INSTANCIA
         if (!$obUser instanceof User) {
-            $request->getRouter()->redirect('/admin/testimonies');
+            $request->getRouter()->redirect('/admin/users');
             return;
         }
 
@@ -185,24 +188,32 @@ class User extends Page
     {
         //DADOS DO POST
         $postVars = $request->getPostVars();
-        echo '<pre>';
-        print_r($postVars);
-        exit;
 
-        if($postVars['nome'] == '' || $postVars['email'] == '' || $postVars['senha'] == ''){
+        //VALIDA OS CAMPOS RECEBIDOS
+        if ($postVars['nome'] == '' || $postVars['email'] == '' || $postVars['senha'] == '') {
             $request->getRouter()->redirect('/admin/users/new');
             return;
         }
 
-        //NOVA INSTANCIA DE DEPOIMENTO
+        //NOVA INSTANCIA DE USUÁRIO
         $obUser = new EntityUser;
         $obUser->nome = trim($postVars['nome']);
         $obUser->email = trim($postVars['email']);
-        $obUser->senha = password_hash($postVars['senha'],PASSWORD_DEFAULT);
-        //$obUser->cadastrar();
+        $obUser->senha = password_hash($postVars['senha'], PASSWORD_DEFAULT);
+
+        //VALIDA O EMAIL A SER CADASTRADO
+        $emailValidacao = EntityUser::getUserByEmail($obUser->email);
+        if ($emailValidacao instanceof EntityUser) {
+            //REDIRECIONA O USUÁRIO
+            $request->getRouter()->redirect('/admin/users/new?status=duplicated');
+            return;
+        };
+
+        //CADASTRAR O USUARIO
+        $obUser->cadastrar();
 
         //REDIRECIONA O USUÁRIO
-        $request->getRouter()->redirect('/admin/testimonies/' . $obUser->id . '/edit?status=created');
+        $request->getRouter()->redirect('/admin/users/' . $obUser->id . '/edit?status=created');
     }
 
     /**
